@@ -1,6 +1,6 @@
 {
   "name": "ui-craft-studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Zero-dependency Anti-Slop UI/UX & Interactive App Design Studio MCP for Mobile and Desktop/Web — studies your codebase first, researches GitHub skills & design systems, compiles DESIGN.md + clickable multi-state prototypes, and audits against AI slop.",
   "main": "index.cjs",
   "bin": {
@@ -8,7 +8,7 @@
     "ui-craft-studio-mcp": "./bin/mcp-server.cjs"
   },
   "scripts": {
-    "check": "node --check index.cjs && node --check bin/ui-craft-studio.cjs && node --check bin/mcp-server.cjs && node --check lib/project-scanner.cjs && node --check lib/design-library.cjs && node --check lib/craft-research.cjs && node --check lib/anti-slop-auditor.cjs && node --check lib/prototype-builder.cjs && node --check lib/orchestrator.cjs && node --check lib/store.cjs && node --check lib/studio-web.cjs && node --check lib/installers.cjs && node --check tests/studio.test.cjs",
+    "check": "node --check index.cjs && node --check bin/ui-craft-studio.cjs && node --check bin/mcp-server.cjs && node --check lib/project-scanner.cjs && node --check lib/design-library.cjs && node --check lib/craft-research.cjs && node --check lib/anti-slop-auditor.cjs && node --check lib/creative-direction.cjs && node --check lib/product-story-builder.cjs && node --check lib/prototype-builder.cjs && node --check lib/orchestrator.cjs && node --check lib/store.cjs && node --check lib/studio-web.cjs && node --check lib/installers.cjs && node --check tests/studio.test.cjs",
     "test": "node --test tests/studio.test.cjs"
   },
   "keywords": [
@@ -21,6 +21,7 @@
     "prototyping",
     "mobile-design",
     "desktop-ui",
+    "product-story",
     "claude-code",
     "codex",
     "gemini-cli"

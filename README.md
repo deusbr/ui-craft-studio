@@ -9,6 +9,16 @@ Zero-dependency **Anti-AI-Slop UI/UX & Interactive App Design Studio MCP** for *
 
 Unlike static screenshot/mockup generators, `ui-craft-studio` **studies your actual codebase first**, researches open-source GitHub design skills and UI patterns, compiles a machine-readable **`DESIGN.md`**, generates **clickable multi-screen & multi-state interactive prototypes** (`populated`, `loading`, `empty`, `error`), exports framework code (`CSS Tokens`, `React + Tailwind`, `React Native`), and runs deterministic **Anti-AI-Slop + WCAG 2.1 AA** audits.
 
+Product-launch briefs now receive a structured, product-specific `creativeDirection` in the generated job and `DESIGN.md`: an authored visual thesis, narrative chapters, one signature interaction, asset-quality rules, performance fallbacks, and cited case-study lessons. Product sites render as a separate responsive story page rather than an app dashboard; audio launches use the `product-story` mode and clearly label the missing GLB instead of passing generic geometry off as the finished product.
+
+### Awarded-Work Research
+
+Recent research across product launch and immersive-site case studies points to a consistent craft pattern: **a recognizable concept tied to the product, a scroll or interaction sequence that reveals useful information, authored assets, and a deliberate low-motion/mobile fallback**. The implementation should borrow these principles, not the case-study layouts:
+
+- [Aether 1 — OFF+BRAND](https://www.itsoffbrand.com/our-work/aether1): product-scale 3D, meaningful chapters, and explicit performance constraints.
+- [Sennheiser Orpheus — Artificial Rome](https://artificialrome.com/case/sennheiser-reshaping-excellence): controlled camera movement exposes concrete product details.
+- [Building Aether 1 — Codrops](https://tympanus.net/codrops/2025/08/06/building-aether-1-sound-without-boundaries/): technical implementation lessons for 3D, scroll scenes, and mobile/WebGL constraints.
+
 ---
 
 ## Inspired By & Integrated Open-Source Ecosystem

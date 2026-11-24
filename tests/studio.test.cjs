@@ -16,6 +16,8 @@ const {
   computeContrastRatio,
   auditPaletteContrast,
   auditAntiSlop,
+  deriveCreativeDirection,
+  runDesignPipeline,
   DesignStore,
   createDesignWebServer,
   getClientTargets,
@@ -79,6 +81,68 @@ test('Anti-AI-Slop auditor verifies WCAG contrast math and catches purple slop, 
   assert.ok(badAudit.findings.some((f) => f.code === 'WCAG_CONTRAST_FAILURE'));
   assert.ok(badAudit.findings.some((f) => f.code === 'INCOMPLETE_INTERACTIVE_STATES'));
   assert.ok(badAudit.findings.some((f) => f.code === 'SINGLE_STATIC_SCREEN'));
+});
+
+test('anti-slop auditor flags repetitive generic cards and unconnected controls', () => {
+  const audit = auditAntiSlop({
+    palette: { bg: '#ffffff', surface: '#f5f5f5', text: '#111111', muted: '#555555', accent: '#00695c', accentText: '#ffffff' },
+    typography: { display: 'Fraunces', body: 'DM Sans' },
+    screens: [{ id: 'home', type: 'dashboard' }, { id: 'detail', type: 'detail' }],
+    interactiveStates: ['populated', 'loading', 'empty', 'error'],
+    codeOrHtml: '<main><div class="metric-card">Revenue</div><div class="stat-card">Active users</div><div class="feature-card">Quick actions</div><div class="dashboard-card">Recent activity</div><button>Run</button><button>Save</button><button>Open</button></main>',
+    designMd: '# Product design system\n'.padEnd(220, 'x'),
+    platforms: ['desktop'],
+    projectScan: { detected: false }
+  });
+  assert.ok(audit.findings.some((finding) => finding.code === 'REPETITIVE_CARD_COMPOSITION'));
+  assert.ok(audit.findings.some((finding) => finding.code === 'GENERIC_DASHBOARD_CONTENT'));
+  assert.ok(audit.findings.some((finding) => finding.code === 'UNWIRED_PRIMARY_CONTROLS'));
+});
+
+test('creative direction builds a product-specific, sourced narrative instead of a generic dashboard', () => {
+  const direction = deriveCreativeDirection({
+    brief: 'Site de lançamento para fone over-ear premium, com configurador e visualização 3D',
+    appName: 'Aurelia',
+    domain: 'media'
+  });
+  assert.equal(direction.mode, 'product-story');
+  assert.match(direction.concept, /Aurelia/);
+  assert.ok(direction.chapters.some((chapter) => /vista explodida/i.test(chapter)));
+  assert.match(direction.assetPolicy, /GLB/);
+  assert.match(direction.performance, /prefers-reduced-motion/);
+  assert.ok(direction.references.some((ref) => ref.url.includes('codrops')));
+  assert.equal(deriveCreativeDirection({ brief: 'Headphone control app for desktop' }).mode, 'application');
+
+  const job = runDesignPipeline({
+    brief: 'Site de lançamento para fone over-ear premium com modelo 3D',
+    appName: 'Aurelia',
+    platforms: ['mobile', 'desktop']
+  });
+  assert.equal(job.creativeDirection.mode, 'product-story');
+  assert.match(job.designMd, /Creative Direction — authored for this brief/);
+  assert.match(job.designMd, /Sennheiser Orpheus/);
+  assert.match(job.designMd, /Performance Contract/);
+  assert.match(job.interactiveHtml, /data-experience="product-story"/);
+  assert.match(job.interactiveHtml, /Adicionar arquivo GLB aprovado/);
+  assert.match(job.interactiveHtml, /data-view="exploded"/);
+  assert.match(job.interactiveHtml, /id="eq-path"/);
+  assert.match(job.interactiveHtml, /id="bag-drawer"/);
+  assert.doesNotMatch(job.interactiveHtml, /class="app-shell"/);
+  assert.ok(job.interactiveHtml.includes('prefers-reduced-motion'));
+  const modelJob = runDesignPipeline({
+    brief: 'Headphone launch website',
+    appName: 'Aurelia',
+    productModelUrl: '/assets/aurelia.glb'
+  });
+  assert.match(modelJob.interactiveHtml, /<model-viewer/);
+  assert.match(modelJob.interactiveHtml, /\/assets\/aurelia\.glb/);
+  assert.throws(() => runDesignPipeline({ brief: 'Headphone launch website', productModelUrl: 'javascript:alert(1)' }), /productModelUrl must be/);
+
+  const brandJob = runDesignPipeline({ brief: 'Product launch website for a handmade fragrance', appName: 'Sombra' });
+  assert.equal(brandJob.creativeDirection.mode, 'brand-story');
+  assert.match(brandJob.interactiveHtml, /data-experience="product-story"/);
+  assert.match(brandJob.interactiveHtml, /Uma forma<br>de <em>ser único/);
+  assert.doesNotMatch(brandJob.interactiveHtml, /class="app-shell"/);
 });
 
 test('Hybrid research queries curated catalog, GitHub repos, Wikipedia, and caches results for 24h', async () => {

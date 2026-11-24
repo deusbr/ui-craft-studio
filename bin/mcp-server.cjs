@@ -57,7 +57,7 @@ const TOOLS = [
   },
   {
     name: 'design_create_prototype',
-    description: 'Study codebase (if projectPath provided), generate DESIGN.md, build an interactive multi-screen & multi-state Mobile+Desktop HTML prototype + framework code, and run Anti-AI-Slop audit.',
+    description: 'Study codebase, generate a distinct app prototype or narrative product-site prototype, compile DESIGN.md, and audit Anti-AI-Slop and WCAG AA. Product sites can load an approved GLB with productModelUrl.',
     inputSchema: {
       type: 'object',
       required: ['brief'],
@@ -70,7 +70,8 @@ const TOOLS = [
         researchQuery: { type: 'string', description: 'Optional UI/UX research query run before compiling.' },
         customScreens: { type: 'array', items: { type: 'object' }, description: 'Optional bespoke screen specs ({id, title, purpose, primaryAction}).' },
         customMetrics: { type: 'array', items: { type: 'object' } },
-        customRecords: { type: 'array', items: { type: 'object' } }
+        customRecords: { type: 'array', items: { type: 'object' } },
+        productModelUrl: { type: 'string', description: 'Optional approved GLB URL or web-relative asset path for product-story sites.' }
       },
       additionalProperties: false
     }
@@ -209,6 +210,7 @@ async function handleToolCall(name, args = {}) {
         customScreens: args.customScreens,
         customMetrics: args.customMetrics,
         customRecords: args.customRecords,
+        productModelUrl: args.productModelUrl,
         researchInsights
       });
       return {

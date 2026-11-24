@@ -2,6 +2,14 @@
 
 All notable changes to `ui-craft-studio` are documented in this file.
 
+## [1.1.0] - 2026-11-24
+
+### Added
+- **Brief-specific creative direction:** product launches now receive a distinct visual thesis, narrative chapters, signature interaction, asset requirements, performance contract, and case-study lessons in the generated job and `DESIGN.md`.
+- **Standalone narrative product-site prototype:** product-site briefs no longer render inside the generic app dashboard shell. The responsive page includes story chapters, finish selection, reduced-motion support, and a clear placeholder when no approved 3D model is available; an approved GLB can be supplied to enable the interactive viewer.
+- **Product-aware quality audit:** narrative sites are checked for chapter depth, explicit asset state, reduced-motion support, and WCAG contrast without requiring app-only loading/empty/error screens.
+- **Awarded-work research:** documented transferable principles from Aether 1, Sennheiser Orpheus, and Codrops' Aether 1 implementation case study; references inform craft decisions rather than copied layouts.
+
 ## [1.0.0] - 2026-11-23
 
 ### Added
